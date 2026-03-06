@@ -1,9 +1,11 @@
 # 🎨 Image2Emoji 转换器
 
-[👉 点击这里在线体验完整功能 (Live Demo) 👈](https://<你的GitHub用户名>.github.io/Image2Emoji/)
-*(注意：请将上面的链接替换为你自己的 GitHub Pages 链接)*
+[👉 点击这里在线体验完整功能 (Live Demo) 👈](https://Acselerator.github.io/Image2Emoji/)
 
 ## 📖 项目简介
+
+<img width="1920" height="1032" alt="image" src="https://github.com/user-attachments/assets/aa4c0760-667f-4f73-8b64-ee1932cf0982" />
+
 **Image2Emoji** 是一个轻量级、纯前端的 Web 应用。通过它可以将你上传的任何图片（支持 PNG、JPG、WebP 以及透明背景）转换成由 Emoji 拼贴而成的“像素画”。
 
 由于完全在浏览器本地（Client-side）通过 HTML5 Canvas 进行图像解析，该应用拥有**绝对的隐私安全性**，全程没有后端服务器通信。
