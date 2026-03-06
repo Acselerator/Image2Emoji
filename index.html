@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image2Emoji 转换器</title>
+    <!-- 引入拆分出来的样式表 -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>🎨 Image2Emoji 转换器</h1>
+            <p>将任何图片转换为由 Emoji 拼成的像素画！支持透明 PNG、图片滤镜及画笔风格化切换。</p>
+        </header>
+
+        <div class="main-content">
+            <!-- 左侧控制面板 -->
+            <div class="controls-panel">
+                <div class="control-group">
+                    <label>1. 上传图片</label>
+                    <input type="file" id="imageInput" accept="image/png, image/jpeg, image/jpg, image/webp">
+                </div>
+
+                <!-- 新增功能：风格化字典选择 -->
+                <div class="control-group">
+                    <label>2. 选择风格画笔</label>
+                    <select id="paletteSelect">
+                        <option value="all">大杂烩 (品类最齐全)</option>
+                        <option value="nature">大自然 (植物与地貌)</option>
+                        <option value="food">大吃货 (水果与食物)</option>
+                        <option value="geometry">像素风 (纯几何图形)</option>
+                    </select>
+                    <div id="paletteInfo" style="font-size: 12px; color: #718096; margin-top: 2px;"></div>
+                </div>
+
+                <div class="control-group">
+                    <label>3. 基础输出设置</label>
+                    <div class="slider-container">
+                        <label>输出列数 (<span id="widthValue">48</span>块)</label>
+                        <input type="range" id="widthScale" min="1" max="256" value="48">
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <label>4. 图像微调滤镜</label>
+                    <div class="slider-container">
+                        <label>亮度 (<span id="brightValue">100</span>%)</label>
+                        <input type="range" id="brightnessScale" min="0" max="255" value="100">
+                    </div>
+                    <div class="slider-container">
+                        <label>对比度 (<span id="contrastValue">100</span>%)</label>
+                        <input type="range" id="contrastScale" min="0" max="255" value="100">
+                    </div>
+                    <div class="slider-container">
+                        <label>饱和度 (<span id="saturateValue">100</span>%)</label>
+                        <input type="range" id="saturateScale" min="0" max="255" value="100">
+                    </div>
+                    <div class="slider-container">
+                        <label>纵向拉伸 (<span id="stretchYValue">1.0</span>)</label>
+                        <input type="range" id="stretchYScale" min="0.5" max="2.0" step="0.1" value="1.0">
+                    </div>
+                    <button id="resetBtn" class="btn secondary">♻️ 重置图片参数</button>
+                </div>
+
+                <div class="control-group" id="previewWrapper" style="display: none;">
+                    <label>处理后预览图 (核心采样依据)</label>
+                    <canvas id="canvas"></canvas>
+                </div>
+            </div>
+
+            <!-- 右侧输出区域 -->
+            <div class="output-panel">
+                <div class="output-header">
+                    <div>
+                        <label>页面显示缩放: </label>
+                        <input type="range" id="fontSizeScale" min="2" max="48" value="16">
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn success" id="copyBtn">📋 一键复制文本</button>
+                        <button class="btn primary" id="exportBtn">🖼️ 导出高清PNG图</button>
+                    </div>
+                </div>
+                
+                <div class="pre-container">
+                    <pre id="output">等待上传图片...</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 依次引入分离出的 JS 模块文件 -->
+    <script src="js/color.js"></script>
+    <script src="js/emojis.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
