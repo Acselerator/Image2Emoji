@@ -168,23 +168,34 @@ document.addEventListener('DOMContentLoaded', () => {
         const lines = textToExport.trimEnd().split('\n');
         if (lines.length === 0) return;
 
+        // 动态计算字体大小，防止 Canvas 超长崩溃
+        const colCount = canvas.width || 1;
+        const MAX_CANVAS_WIDTH = 4000;
+        
+        // 🚨很多系统/字体下 Emoji 的实际渲染宽度往往超过纯字号（比如 1.35x 字号），所以需要容错折算
+        let exportFontSize = Math.floor(MAX_CANVAS_WIDTH / (colCount * 1.35));
+        if (exportFontSize > 32) exportFontSize = 32; 
+        if (exportFontSize < 8) exportFontSize = 8;   
+
+        const exportLineHeight = Math.floor(exportFontSize * 1.15); 
+
         const exportCanvas = document.createElement('canvas');
         const exportCtx = exportCanvas.getContext('2d');
         
-        const exportFontSize = 48; 
-        const exportLineHeight = Math.floor(exportFontSize * 1.1); 
-        
+        // 【核心修复步骤 1】必须先指定好字体，才能利用 measureText 拿来精确获取渲染下的真实像素宽度
         exportCtx.font = `${exportFontSize}px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif`;
         
-        let maxChars = 0;
+        let actualMaxWidth = 0;
         for (let i = 0; i < lines.length; i++) {
-            const chars = Array.from(lines[i]); 
-            if (chars.length > maxChars) maxChars = chars.length;
+            const w = exportCtx.measureText(lines[i]).width;
+            if (w > actualMaxWidth) actualMaxWidth = w;
         }
         
-        exportCanvas.width = Math.max(1, maxChars * exportFontSize * 1.05); 
+        // 动态定宽：这样就能自适应任何宽度的 Emoji 组合了
+        exportCanvas.width = Math.max(1, Math.ceil(actualMaxWidth) + 10); // 留一点冗余
         exportCanvas.height = Math.max(1, lines.length * exportLineHeight);
-        
+
+        // 【核心修复步骤 2】设置 Canvas 的宽高会彻底清空 ctx 内置状态，必须再次声明字体参数！
         exportCtx.font = `${exportFontSize}px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif`;
         exportCtx.textBaseline = "top";
         
